@@ -1,22 +1,18 @@
 class AccountCreated {
-    
+
     customerId = '';
     constructor() {
         this.customerId = '';
-      }
-    
+    }
+
     getAccountId() {
-        cy.get('table[name=customer]>tbody>tr td:nth-child(2)').each(($e,index,$list)=>{
-            if(index == 0){
+        cy.get('table[name=customer]>tbody>tr td:nth-child(2)').each(($e, index, $list) => {
+            if (index == 0) {
                 this.customerId = $e.text()
                 this.continue()
                 this.fillCusId(this.customerId)
             }
         })
-    }
-
-    makeDeposit() {
-
     }
 
     fillDeposit(value) {
