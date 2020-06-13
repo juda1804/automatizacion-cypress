@@ -30,7 +30,7 @@ describe('Test suit', function() {
     })
 
 
-    it.only('Test Case 2',function() {
+    it('Test Case 2',function() {
         let loginPage =  new LoginPage();
         let createAccount = new CreateAccount();
         let accountCreated = new AccountCreated();
@@ -68,7 +68,7 @@ describe('Test suit', function() {
         
     })
 
-    it.only('Test Case 3',function() {
+    it('Test Case 3',function() {
         let loginPage =  new LoginPage();
         let withdrawal = new Withdrawal();
 
@@ -85,6 +85,5 @@ describe('Test suit', function() {
 
         cy.get('#withdraw > tbody > tr:nth-child(23) > td:nth-child(1)').should('contain','Current Balance')
         
-
     })
 }) 
