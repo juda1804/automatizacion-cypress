@@ -5,7 +5,7 @@ import AccountCreated from "./pageObject/accountCreated"
 describe('Test suit', function() {
     const urlBase = 'http://demo.guru99.com/V4/index.php'
     var myNumeroAleatorio = Math.floor(Math.random()*(1000000+1))
-    var emailid = myNumeroAleatorio + "@poli.edu.co"
+    var emailid = myNumeroAleatorio+"1" + "@poli.edu.co"
     const userid = 'mngr264622'
     const password = 'UvegabU'
     const pinno = '264622'
@@ -52,7 +52,12 @@ describe('Test suit', function() {
         createAccount.submit();
     
         accountCreated.getAccountId();
-        cy.contains('Customer ID')
+        accountCreated.fillDeposit(10000);
+        accountCreated.submit();
+        
+
+        //accountCreated.continue();
+        //accountCreated.fillCusId(accountCreated.customerId)
         //cy.visit('http://demo.guru99.com/V4/manager/addAccount.php')
 
         //cy.get('input[name="cusid"]').type(customerId)
