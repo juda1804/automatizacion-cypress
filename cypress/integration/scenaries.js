@@ -2,16 +2,21 @@ import LoginPage from "./pageObject/home"
 import CreateAccount from "./pageObject/createAccount"
 import AccountCreated from "./pageObject/accountCreated"
 import Withdrawal from "./pageObject/withdrawal"
+import Deposit from "./pageObject/deposit"
+import Balance from "./pageObject/balance"
+import CustomizedStatement from "./pageObject/customizedStatemen"
 
 describe('Test suit', function() {
     const urlBase = 'http://demo.guru99.com/V4/index.php'
     var myNumeroAleatorio = Math.floor(Math.random()*(1000000+1))
-    var emailid = myNumeroAleatorio+"1" + "@poli.edu.co"
+    var emailid = myNumeroAleatorio + "@poli.edu.co"
     var accountNo = "";
+    var transaccionId = "";
     const userid = 'mngr264622'
     const password = 'UvegabU'
     const pinno = '264622'
     const deposit = 1000
+    let   retiro  = 1000
     
 
     Cypress.on('uncaught:exception', (err, runnable) => {
@@ -29,11 +34,86 @@ describe('Test suit', function() {
         cy.get('table:nth-child(2)>tbody>tr:nth-child(3)>td').should('contain',userid)
     })
 
+    
+    it('Test Case 3',function() {
+        let loginPage =  new LoginPage();
+        let withdrawal = new Withdrawal();
 
-    it.only('Test Case 2',function() {
+        loginPage.visit();
+        loginPage.fillUid(userid);
+        loginPage.fillPassword(password);
+        loginPage.submit();
+
+        withdrawal.visit();
+        withdrawal.fillAccountNo(accountNo);
+        withdrawal.fillAmmount(deposit);
+        withdrawal.fillDescription('Deposito');
+        withdrawal.submit();
+
+        cy.get('#balenquiry > tbody > tr:nth-child(16) > td:nth-child(2)').should('contain','0')
+        
+
+    })
+
+    //Deposito y valida y valida
+    it.only('Deposito y validacion Balance',function() {
+        let loginPage =  new LoginPage();
+        let depositPage = new Deposit();
+        let createAccount = new CreateAccount();
+        let accountCreated = new AccountCreated();
+        let balance = new Balance();
+
+        loginPage.visit();
+        loginPage.fillUid(userid);
+        loginPage.fillPassword(password);
+        loginPage.submit();
+        //Crear account
+        createAccount.visit();
+        createAccount.fillName('Juan')
+        createAccount.fillDatePicker(1990,12,12)
+        createAccount.fillAddr('Lopez')
+        createAccount.fillCity('Medellin')
+        createAccount.fillState('Colombia')
+        createAccount.fillPinno(pinno)
+        createAccount.fillTelephoneno('000000')
+        createAccount.fillEmailId(emailid)
+        createAccount.fillPassword('123asd')
+        createAccount.submit();
+
+        accountCreated.getAccountId();
+        accountCreated.fillDeposit(deposit);
+        accountCreated.submit();
+
+        cy.get('#account > tbody > tr:nth-child(4) > td:nth-child(2)').each(
+            ($e, index, $list) => {
+            if (index == 0) {
+                accountNo = $e.text()
+
+                //Llenado del valor del deposito
+                depositPage.visit();
+                depositPage.fillAccountNo(accountNo);
+                depositPage.fillDeposit(deposit);
+                depositPage.fillDescription('Depósito');
+                depositPage.submit();
+
+                //validacion del nuevo monto
+                balance.visit()
+                balance.fillAccountNo(accountNo)
+                balance.submit();
+
+
+            }
+        })
+        cy.get('#balenquiry > tbody > tr:nth-child(16) > td:nth-child(2)').should('contain','2000')
+    })
+
+    //Retiro y valida
+    it('Retiro y validacion balance',function() {
         let loginPage =  new LoginPage();
         let createAccount = new CreateAccount();
         let accountCreated = new AccountCreated();
+        let withdrawal = new Withdrawal();
+        let balance = new Balance();
         
         loginPage.visit();
         loginPage.fillUid(userid);
@@ -61,30 +141,84 @@ describe('Test suit', function() {
             ($e, index, $list) => {
             if (index == 0) {
                 accountNo = $e.text()
+                withdrawal.visit();
+                withdrawal.fillAccountNo(accountNo);
+                withdrawal.fillAmmount(retiro);
+                withdrawal.fillDescription('Retiro');
+                withdrawal.submit();
+                
+                //validacion del nuevo monto
+                balance.visit()
+                balance.fillAccountNo(accountNo)
+                balance.submit();
+   
             }
         })
-
-        cy.get('table[id=account]>tbody>tr:nth-child(10)>td:nth-child(2)').should('contain', deposit)
-        
+        cy.get('#balenquiry > tbody > tr:nth-child(16) > td:nth-child(2)').should('contain','0')
     })
 
-    it.only('Test Case 3',function() {
+    it('Deposito, y validacion de transaccion', function(){
         let loginPage =  new LoginPage();
-        let withdrawal = new Withdrawal();
+        let depositPage = new Deposit();
+        let createAccount = new CreateAccount();
+        let accountCreated = new AccountCreated();
+        let balance = new Balance();
+        let customizedStatement = new CustomizedStatement();
 
         loginPage.visit();
         loginPage.fillUid(userid);
         loginPage.fillPassword(password);
         loginPage.submit();
+        //Crear account
+        createAccount.visit();
+        createAccount.fillName('Juan')
+        createAccount.fillDatePicker(1990,12,12)
+        createAccount.fillAddr('Lopez')
+        createAccount.fillCity('Medellin')
+        createAccount.fillState('Colombia')
+        createAccount.fillPinno(pinno)
+        createAccount.fillTelephoneno('000000')
+        createAccount.fillEmailId(emailid)
+        createAccount.fillPassword('123asd')
+        createAccount.submit();
 
-        withdrawal.visit();
-        withdrawal.fillAccountNo(accountNo);
-        withdrawal.fillAmmount(deposit);
-        withdrawal.fillDescription('N/A');
-        withdrawal.submit();
-
-        cy.get('#withdraw > tbody > tr:nth-child(23) > td:nth-child(1)').should('contain','Current Balance')
+        accountCreated.getAccountId();
+        accountCreated.fillDeposit(deposit);
+        accountCreated.submit();
         
+        cy.get('#account > tbody > tr:nth-child(4) > td:nth-child(2)').each(
+            ($e, index, $list) => {
+            if (index == 0) {
+                accountNo = $e.text()
 
+                //Llenado del valor del deposito
+                depositPage.visit();
+                depositPage.fillAccountNo(accountNo);
+                depositPage.fillDeposit(deposit);
+                depositPage.fillDescription('Susten 2');
+                depositPage.submit();
+                
+                cy.get('#deposit > tbody > tr:nth-child(6) > td:nth-child(2)').each(
+                    ($e, index, $list) => {
+                        if (index==0) {
+                            transaccionId = $e.text();
+                            customizedStatement.visit();
+                            customizedStatement.fillFromDatePicker(2020,1,1)
+                            customizedStatement.filltoDatePicker(2020,12,1)
+                            customizedStatement.fillTransactionId(transaccionId)
+                            customizedStatement.submit()
+                        }
+                    }
+                )
+                
+                //validacion del nuevo monto
+                balance.visit()
+                balance.fillAccountNo(accountNo)
+                balance.submit();
+
+
+            }
+        })
     })
+
 }) 
