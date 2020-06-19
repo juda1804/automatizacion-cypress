@@ -157,13 +157,14 @@ describe('Test suit', function() {
         cy.get('#balenquiry > tbody > tr:nth-child(16) > td:nth-child(2)').should('contain','0')
     })
 
-    it.only('Deposito, y validacion de transaccion', function(){
+    it.only('Depositar y validar transaccion en customized statement', function(){
         cy.clock();
         let loginPage =  new LoginPage();
         let depositPage = new Deposit();
         let createAccount = new CreateAccount();
         let accountCreated = new AccountCreated();
         let customizedStatement = new CustomizedStatement();
+        let amountMinimumTransaction = 50000;
 
         loginPage.visit();
         loginPage.fillUid(userid);
@@ -190,30 +191,34 @@ describe('Test suit', function() {
             ($e, index, $list) => {
             if (index == 0) {
                 accountNo = $e.text()
-
-                //Llenado del valor del deposito
                 depositPage.visit();
                 depositPage.fillAccountNo(accountNo);
-                depositPage.fillDeposit(deposit);
+                depositPage.fillDeposit(amountMinimumTransaction);
                 depositPage.fillDescription('Susten 2');
                 depositPage.submit();
-                
                 cy.get('#deposit > tbody > tr:nth-child(6) > td:nth-child(2)').each(
                     ($a, index, $list) =>    {
-                        if (index==0) {
-                            transaccionId = $a.text();
-
-                            customizedStatement.visit();
-                            customizedStatement.fillFromDatePicker(2020,1,1);
-                            customizedStatement.filltoDatePicker(2020,12,1);
-                            customizedStatement.fillTransactionId(transaccionId);
-                            customizedStatement.submit();
-                        }
+                        console.log($a.text())
                     }
-                )
-
+                );
             }
-        })
+        });
+
+        cy.tick(1000);
+
+        cy.get('#deposit > tbody > tr:nth-child(6) > td:nth-child(2)').each(
+            ($a, index, $list) =>    {
+                if (index==0) {
+                    transaccionId = $a.text();
+                    customizedStatement.visit();
+                    customizedStatement.fillFromDatePicker(2020,1,1);
+                    customizedStatement.fillToDatePicker(2020,12,1);
+                    customizedStatement.fillAmountlowerlimit(amountMinimumTransaction); 
+                    customizedStatement.fillTransactionId(transaccionId);
+                    customizedStatement.submit();
+                }
+            }
+        );
     })
 
 }) 

@@ -13,6 +13,10 @@ class Deposit{
     fillDescription(value) {
         cy.get('input[name="desc"]').type(value)
     }
+    continue(){
+        cy.visit('http://demo.guru99.com/V4/manager/Managerhomepage.php')
+    }
+    
     submit() {
         const button = cy.get(`input[name="AccSubmit"]`);
         button.click();

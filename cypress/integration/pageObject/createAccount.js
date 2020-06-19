@@ -67,8 +67,6 @@ class CreateAccount {
         const field = cy.get(`input[name="state"]`);
         field.clear();
         field.type(value);
-
-        return this;
     }
 
     getPinno() {
@@ -79,8 +77,6 @@ class CreateAccount {
         const field = cy.get(`input[name="pinno"]`);
         field.clear();
         field.type(value);
-
-        return this;
     }
 
     getTelephoneno() {
@@ -91,8 +87,6 @@ class CreateAccount {
         const field = cy.get(`input[name="telephoneno"]`);
         field.clear();
         field.type(value);
-
-        return this;
     }
 
 
@@ -104,8 +98,6 @@ class CreateAccount {
         const field = cy.get(`input[name="emailid"]`);
         field.clear();
         field.type(value);
-
-        return this;
     }
 
     getPassword() {

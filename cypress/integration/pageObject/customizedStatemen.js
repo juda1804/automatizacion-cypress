@@ -3,47 +3,46 @@ class CustomizedStatement {
         cy.visit('http://demo.guru99.com/V4/manager/CustomisedStatementInput.php');
     }
 
+    getAccountNo(){return cy.get(`input[name="accountno"]`)}
 
     fillAccountNo(value) {
         const field = cy.get(`input[name="accountno"]`);
         field.clear();
         field.type(value);
-
-        return this;
-    }
-
-    fillAccountNo(value) {
-        const field = cy.get(`input[name="accountno"]`);
-        field.clear();
-        field.type(value);
-
-        return this;
     }
 
     fillFromDatePicker(year, month, day) {
-        return fillDatePicker(year,month,day,'fdate')
+        const targetDate = Cypress.moment()
+        .subtract(year, 'year')
+        .add(month, 'month')
+        .add(day, 'day')
+        .format('YYYY-MM-DD')
+
+    cy.get(`input[name=fdate]`)
+        .clear()
+        .type(`${targetDate}`)
     }
 
     fillToDatePicker(year, month, day) {
-        return fillDatePicker(year,month,day,'tdate')   
-    }
-
-    fillDatePicker(year, month, day,field) {
         const targetDate = Cypress.moment()
-            .subtract(year, 'year')
-            .add(month, 'month')
-            .add(day, 'day')
-            .format('YYYY-MM-DD')
+        .subtract(year, 'year')
+        .add(month, 'month')
+        .add(day, 'day')
+        .format('YYYY-MM-DD')
 
-        cy.get('input[name=' + field + ']')
-            .clear()
-            .type(`${targetDate}`)
-
-        return this;
+    cy.get(`input[name=tdate]`)
+        .clear()
+        .type(`${targetDate}`)  
     }
 
     fillTransactionId(value) {
         cy.get('input[name=numtransaction]')
+        .clear()
+        .type(value)
+    }
+
+    fillAmountlowerlimit(value) {
+        cy.get('input[name=amountlowerlimit]')
         .clear()
         .type(value)
     }
