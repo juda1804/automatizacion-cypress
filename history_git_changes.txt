@@ -1,0 +1,69 @@
+4279  git checkout -b conflictos
+ 4280  g status
+ 4281  gco master
+ 4282  gco .
+ 4283  g branch -d conflictos
+ 4284  clear
+ 4285  git checkout -b conflictos
+ 4286  git status
+ 4287  git diff
+ 4288  git stash
+ 4289  git checkout master
+ 4290  git status
+ 4291  git diff
+ 4292  git stash pop
+ 4293  g commit -m "4.Realizar un nuevo cambio en la rama master, sobre la misma linea de la rama conflictos"
+ 4294  g commit -am "4.Realizar un nuevo cambio en la rama master, sobre la misma linea de la rama conflictos"
+ 4295  git checkout conflicto
+ 4296  git checkout conflictos
+ 4297  g status
+ 4298  git stash pop
+ 4299  git commit -am "7.Cambiar a rama conflicto y realizar commit."
+ 4300  git checkout master
+ 4301  git config merge.tool vimdiff\ngit config merge.conflictstyle diff3\ngit config mergetool.prompt false
+ 4302  g branch
+ 4303* git pull conflictos
+ 4304* git checkout conflictos
+ 4305* git push origin conflictos
+ 4306* git checkout master
+ 4307* git pull origin conflictos
+ 4308  git mergetool
+ 4309* git status
+ 4310* git commit -m "9.Realizar un commit de los cambios realizados."
+ 4311* g status
+ 4312* g stash
+ 4313* g status
+ 4314* git log
+ 4315* git reset --hard HEAD 51b63c8b685ed8d138cde8c5b659bc68c3cb2201
+ 4316* git reset --hard 51b63c8b685ed8d138cde8c5b659bc68c3cb2201
+ 4317* git status
+ 4318  clear
+ 4319  g status
+ 4320* g log
+ 4321* touch .gitignore
+ 4322* nano .gitignore
+ 4323* g status
+ 4324* g add .
+ 4325* g commit -m "git ignore"
+ 4326* clear
+ 4327* g diff
+ 4328* git stash
+ 4329* git diff
+ 4330* git stash pop
+ 4331* git commit -m "Recuperar el cambio y resoolver el error"
+ 4332* git stash pop
+ 4333* git status
+ 4334* git commit -m "6.Realizar un commit en master."
+ 4335* git checkout conflictos
+ 4336* git status
+ 4337* git diff
+ 4338* git commit -am "7.Cambiar a la rama conflicto y realizar commit."
+ 4339* git checkout master
+ 4340* git checkout conflictos
+ 4341* git push origin conflictos
+ 4342* git checkout master
+ 4343* git pull origin conflictos
+ 4344* git status
+ 4345* git commit -m "Merge entre las dos ramas"
+ 4346* git reset --hard HEAD^
+
