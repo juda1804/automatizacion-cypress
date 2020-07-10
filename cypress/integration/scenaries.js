@@ -12,7 +12,7 @@ describe('Test suit', function() {
     var emailid = myNumeroAleatorio + "@poli.edu.co"
     var accountNo = "";
     var transaccionId = "";
-    const userid = 'mn'
+    const userid = 'mngr264'
     const password = 'UvegabU'
     const pinno = '264622'
     const deposit = 1000
